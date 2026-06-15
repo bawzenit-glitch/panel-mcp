@@ -110,7 +110,7 @@ def buscar_discrepancias(
         "Referer": f"{BUSCADOR}/",
     }
     items: list[dict] = []
-    with c:
+    try:
         r = c.post(SEARCH, headers=cab, json={"query": consulta})
         r.raise_for_status()
         data = r.json()
@@ -125,6 +125,8 @@ def buscar_discrepancias(
             b2 = d2.get("body", {}) or {}
             items.extend(b2.get("value", []) or [])
             next_link = d2.get("next_link") or b2.get("@odata.nextLink")
+    finally:
+        c.close()
 
     resultados = []
     for it in items:
