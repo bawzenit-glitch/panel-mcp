@@ -8,34 +8,48 @@ from datetime import date
 _FECHA = date.today().strftime("%d/%m/%Y")
 
 LOGO_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Panel de Expertos">
-  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#3b5bdb"/><stop offset="1" stop-color="#1c2f86"/>
-  </linearGradient></defs>
-  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <g stroke="#ffffff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <line x1="256" y1="120" x2="256" y2="372"/>
-    <line x1="132" y1="158" x2="380" y2="158"/>
-    <circle cx="256" cy="120" r="14" fill="#ffffff"/>
-    <line x1="132" y1="158" x2="100" y2="250"/><line x1="132" y1="158" x2="164" y2="250"/>
-    <path d="M88 250 a44 30 0 0 0 88 0 Z" fill="#cdd8ff"/>
-    <line x1="380" y1="158" x2="348" y2="250"/><line x1="380" y1="158" x2="412" y2="250"/>
-    <path d="M336 250 a44 30 0 0 0 88 0 Z" fill="#cdd8ff"/>
-    <line x1="200" y1="372" x2="312" y2="372"/>
-    <line x1="186" y1="398" x2="326" y2="398"/>
+  <defs>
+    <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9ccff"/><stop offset="0.5" stop-color="#a78bfa"/><stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c4b5fd"/><stop offset="1" stop-color="#6d28d9"/>
+    </linearGradient>
+    <g id="wingset" stroke="#2a1a5e" stroke-width="5" stroke-linejoin="round">
+      <g transform="translate(252,292) rotate(-74)"><ellipse cx="118" cy="0" rx="118" ry="32" fill="url(#wing)"/><ellipse cx="150" cy="-9" rx="46" ry="11" fill="#ece7ff" opacity="0.55" stroke="none"/></g>
+      <g transform="translate(252,292) rotate(-50)"><ellipse cx="138" cy="0" rx="138" ry="36" fill="url(#wing)"/><ellipse cx="176" cy="-11" rx="54" ry="12" fill="#ece7ff" opacity="0.55" stroke="none"/></g>
+      <g transform="translate(252,292) rotate(-22)"><ellipse cx="122" cy="0" rx="122" ry="30" fill="url(#wing)"/><ellipse cx="156" cy="-9" rx="48" ry="10" fill="#ece7ff" opacity="0.5" stroke="none"/></g>
+      <g transform="translate(252,300) rotate(16)"><ellipse cx="96" cy="0" rx="96" ry="26" fill="url(#wing)"/><ellipse cx="120" cy="-7" rx="38" ry="9" fill="#ece7ff" opacity="0.5" stroke="none"/></g>
+      <g transform="translate(252,300) rotate(42)"><ellipse cx="72" cy="0" rx="72" ry="21" fill="url(#wing)"/><ellipse cx="92" cy="-6" rx="28" ry="7" fill="#ece7ff" opacity="0.45" stroke="none"/></g>
+    </g>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#120b25"/>
+  <use href="#wingset"/>
+  <use href="#wingset" transform="translate(512,0) scale(-1,1)"/>
+  <g fill="none" stroke="#4a3a86" stroke-width="6" stroke-linecap="round">
+    <path d="M246 252 C234 220 228 206 222 196"/><path d="M266 252 C278 220 284 206 290 196"/>
   </g>
+  <circle cx="222" cy="194" r="7" fill="#c4b5fd"/><circle cx="290" cy="194" r="7" fill="#c4b5fd"/>
+  <circle cx="256" cy="266" r="20" fill="url(#body)" stroke="#2a1a5e" stroke-width="5"/>
+  <circle cx="248" cy="262" r="6" fill="#ece7ff"/><circle cx="264" cy="262" r="6" fill="#ece7ff"/>
+  <path d="M256 280 C288 292 288 360 256 408 C224 360 224 292 256 280 Z" fill="url(#body)" stroke="#2a1a5e" stroke-width="5"/>
+  <path d="M250 300 C246 330 248 360 256 392" fill="none" stroke="#ece7ff" stroke-width="7" stroke-linecap="round" opacity="0.6"/>
 </svg>"""
 
 FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Panel de Expertos">
-  <rect width="64" height="64" rx="16" fill="#2440b0"/>
-  <g stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <line x1="32" y1="15" x2="32" y2="47"/><line x1="16" y1="20" x2="48" y2="20"/>
-    <circle cx="32" cy="15" r="2.6" fill="#ffffff"/>
-    <line x1="16" y1="20" x2="11" y2="33"/><line x1="16" y1="20" x2="21" y2="33"/>
-    <path d="M9 33 a7 5 0 0 0 14 0 Z" fill="#cdd8ff"/>
-    <line x1="48" y1="20" x2="43" y2="33"/><line x1="48" y1="20" x2="53" y2="33"/>
-    <path d="M41 33 a7 5 0 0 0 14 0 Z" fill="#cdd8ff"/>
-    <line x1="25" y1="47" x2="39" y2="47"/><line x1="23" y1="50" x2="41" y2="50"/>
-  </g>
+  <defs>
+    <linearGradient id="w" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9ccff"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
+    <g id="fw" stroke="#2a1a5e" stroke-width="1.4" stroke-linejoin="round">
+      <g transform="translate(32,34) rotate(-62)"><ellipse cx="16" cy="0" rx="16" ry="5.2" fill="url(#w)"/></g>
+      <g transform="translate(32,34) rotate(-34)"><ellipse cx="18.5" cy="0" rx="18.5" ry="5.6" fill="url(#w)"/></g>
+      <g transform="translate(32,35) rotate(-6)"><ellipse cx="15.5" cy="0" rx="15.5" ry="4.6" fill="url(#w)"/></g>
+      <g transform="translate(32,36) rotate(26)"><ellipse cx="11" cy="0" rx="11" ry="3.6" fill="url(#w)"/></g>
+    </g>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#120b25"/>
+  <use href="#fw"/><use href="#fw" transform="translate(64,0) scale(-1,1)"/>
+  <circle cx="32" cy="31" r="3" fill="url(#w)" stroke="#2a1a5e" stroke-width="1.2"/>
+  <path d="M32 33 C36 38 36 47 32 53 C28 47 28 38 32 33 Z" fill="url(#w)" stroke="#2a1a5e" stroke-width="1.2"/>
 </svg>"""
 
 _ESTILO = """
@@ -59,6 +73,8 @@ _ESTILO = """
 """
 
 _HEAD = """<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">"""
 
 

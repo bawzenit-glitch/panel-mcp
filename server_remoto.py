@@ -8,6 +8,7 @@ conectores remotos). Autorización de auto-aprobación (datos públicos).
 URL pública: PUBLIC_URL o RAILWAY_PUBLIC_DOMAIN (fallback localhost).
 """
 
+import base64
 import os
 
 from pydantic import AnyHttpUrl
@@ -19,6 +20,7 @@ from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
 from mcp.types import ToolAnnotations
 
+from assets import FAVICON_ICO_B64, FAVICON_PNG_B64
 from auth_provider import ProveedorOAuthAutoAprobacion
 from paginas import (
     FAVICON_SVG,
@@ -98,6 +100,16 @@ async def _logo(request: Request) -> Response:
 @mcp.custom_route("/favicon.svg", methods=["GET"])
 async def _favicon(request: Request) -> Response:
     return Response(FAVICON_SVG, media_type="image/svg+xml")
+
+
+@mcp.custom_route("/favicon.ico", methods=["GET"])
+async def _favicon_ico(request: Request) -> Response:
+    return Response(base64.b64decode(FAVICON_ICO_B64), media_type="image/x-icon")
+
+
+@mcp.custom_route("/favicon.png", methods=["GET"])
+async def _favicon_png(request: Request) -> Response:
+    return Response(base64.b64decode(FAVICON_PNG_B64), media_type="image/png")
 
 
 @mcp.custom_route("/health", methods=["GET"])
