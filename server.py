@@ -21,6 +21,7 @@ Ejecución local (stdio):
     python server.py
 """
 
+import io
 import json
 import logging
 import re
@@ -151,6 +152,7 @@ def buscar_discrepancias(
             "nombre": it.get("name"),
             "anio": anio_it,
             "tipo": "discrepancia" if es_carpeta else ("documento" if es_archivo else "otro"),
+            "id": it.get("id"),
             "url": it.get("webUrl"),
             "descarga": f"{DOWNLOAD}?id={it.get('id')}" if es_archivo else None,
             "creado": it.get("createdDateTime"),
@@ -164,6 +166,62 @@ def buscar_discrepancias(
         "anio": anio,
         "total": len(resultados),
         "discrepancias": resultados,
+        "nota": "Para leer el contenido de un documento (ej. el dictamen), usa "
+                "leer_documento con el 'id' de un resultado de tipo 'documento' "
+                "(busca con solo_discrepancias=False para ver los documentos).",
+        "fuente": "Panel de Expertos del mercado eléctrico de Chile (panelexpertos.cl)",
+    }
+
+
+@mcp.tool()
+def leer_documento(id: str, max_caracteres: int = 18000) -> dict:
+    """Descarga un documento del Panel de Expertos por su 'id' y devuelve su
+    TEXTO extraído (por ejemplo, el dictamen de una discrepancia). El 'id' se
+    obtiene de buscar_discrepancias(..., solo_discrepancias=False), en los
+    resultados de tipo 'documento'.
+
+    Útil cuando necesitas el contenido literal de un dictamen o escrito, no solo
+    el enlace. Solo extrae texto de PDFs con capa de texto (no hace OCR de
+    documentos escaneados).
+    """
+    _log_uso("leer_documento", id=id)
+    c, token = _sesion_y_token()
+    try:
+        r = c.get(DOWNLOAD, params={"id": id})
+        r.raise_for_status()
+        contenido = r.content
+        ctype = (r.headers.get("content-type") or "").lower()
+    finally:
+        c.close()
+
+    try:
+        from pypdf import PdfReader
+        lector = PdfReader(io.BytesIO(contenido))
+        texto = "\n".join((p.extract_text() or "") for p in lector.pages).strip()
+    except Exception as e:
+        return {
+            "id": id,
+            "error": f"No se pudo extraer texto del documento: {e}. "
+                     "Puede que no sea un PDF con capa de texto (escaneado).",
+            "content_type": ctype,
+            "bytes": len(contenido),
+            "fuente": "Panel de Expertos (panelexpertos.cl)",
+        }
+
+    if not texto:
+        return {
+            "id": id,
+            "error": "El documento no tiene texto extraíble (posible PDF escaneado).",
+            "content_type": ctype,
+            "bytes": len(contenido),
+        }
+
+    return {
+        "id": id,
+        "content_type": ctype,
+        "longitud": len(texto),
+        "truncado": len(texto) > max_caracteres,
+        "texto": texto[:max_caracteres],
         "fuente": "Panel de Expertos del mercado eléctrico de Chile (panelexpertos.cl)",
     }
 

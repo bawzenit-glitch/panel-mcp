@@ -29,7 +29,7 @@ from paginas import (
     pagina_privacidad,
     pagina_terminos,
 )
-from server import buscar_discrepancias
+from server import buscar_discrepancias, leer_documento
 
 CONTACTO = os.environ.get("CONTACTO_EMAIL", "contacto@bfly-cluster.ai")
 
@@ -75,6 +75,16 @@ mcp.tool(
         openWorldHint=True,
     ),
 )(buscar_discrepancias)
+
+mcp.tool(
+    title="Leer documento del Panel de Expertos",
+    annotations=ToolAnnotations(
+        title="Leer documento del Panel de Expertos",
+        readOnlyHint=True,
+        destructiveHint=False,
+        openWorldHint=True,
+    ),
+)(leer_documento)
 
 
 @mcp.custom_route("/", methods=["GET"])
