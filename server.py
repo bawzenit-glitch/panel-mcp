@@ -129,11 +129,20 @@ def buscar_discrepancias(
         c.close()
 
     resultados = []
+    vistos = set()
     for it in items:
         es_carpeta = "folder" in it
         es_archivo = "file" in it
-        if solo_discrepancias and not es_carpeta:
+        num = _numero_de(it)
+        # En modo discrepancias: solo carpetas de primer nivel "NN-AAAA ..."
+        # (descarta subcarpetas internas como "01.Actuaciones del Panel").
+        if solo_discrepancias and not num:
             continue
+        # evita duplicados por número
+        if num and num in vistos:
+            continue
+        if num:
+            vistos.add(num)
         anio_it = _anio_de(it)
         if anio and anio_it != str(anio):
             continue
